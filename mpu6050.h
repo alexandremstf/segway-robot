@@ -1,6 +1,8 @@
 #ifndef MPU6050
 #define MPU6050
 
+#include <util/delay.h>
+
 #define XG_OFFS_TC 0x00
 #define YG_OFFS_TC 0x01
 #define ZG_OFFS_TC 0x02
@@ -111,5 +113,13 @@
 #define FIFO_COUNTL 0x73
 #define FIFO_R_W 0x74
 #define WHO_AM_I 0x75
+
+void mpu6050_init(int);
+double read_acceleration_x(int);
+double read_acceleration_y(int);
+double read_acceleration_z(int);
+double read_gyro_x(int);
+double read_gyro_y(int);
+double read_gyro_z(int);
 
 #endif /* MPU6050 */
