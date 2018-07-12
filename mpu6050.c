@@ -14,7 +14,7 @@ double read_acceleration_x(int adress) {
 	buffer_reg[0] = i2c_read_register(ACCEL_XOUT_H, adress);
 	buffer_reg[1] = i2c_read_register(ACCEL_XOUT_L, adress);
 	int16_t buffer = (buffer_reg[0] << 8) | (buffer_reg[1]);
-	return ((double)buffer * 9.8 * 2 / 32768);
+	return ((double)buffer * 2 / 32768);
 }
 
 double read_acceleration_y(int adress) {
@@ -22,7 +22,7 @@ double read_acceleration_y(int adress) {
 	buffer_reg[0] = i2c_read_register(ACCEL_YOUT_H, adress);
 	buffer_reg[1] = i2c_read_register(ACCEL_YOUT_L, adress);
 	int16_t buffer = (buffer_reg[0] << 8) | (buffer_reg[1]);
-	return ((double)buffer * 9.8 * 2 / 32768);
+	return ((double)buffer * 2 / 32768);
 }
 
 double read_acceleration_z(int adress) {
@@ -30,7 +30,7 @@ double read_acceleration_z(int adress) {
 	buffer_reg[0] = i2c_read_register(ACCEL_ZOUT_H, adress);
 	buffer_reg[1] = i2c_read_register(ACCEL_ZOUT_L, adress);
 	int16_t buffer = (buffer_reg[0] << 8) | (buffer_reg[1]);
-	return ((double)buffer * 9.8 * 2 / 32768);
+	return ((double)buffer * 2 / 32768);
 }
 
 double read_gyro_x(int adress) {
@@ -38,7 +38,7 @@ double read_gyro_x(int adress) {
 	buffer_reg[0] = i2c_read_register(GYRO_XOUT_H, adress);
 	buffer_reg[1] = i2c_read_register(GYRO_XOUT_L, adress);
 	int16_t buffer = (buffer_reg[0] << 8) | (buffer_reg[1]);
-	return ((double)buffer * 250 * 3.1415) / 32768 / 180;
+	return ((double)buffer * 250) / 32768;
 }
 
 double read_gyro_y(int adress) {
@@ -46,7 +46,7 @@ double read_gyro_y(int adress) {
 	buffer_reg[0] = i2c_read_register(GYRO_YOUT_H, adress);
 	buffer_reg[1] = i2c_read_register(GYRO_YOUT_L, adress);
 	int16_t buffer = (buffer_reg[0] << 8) | (buffer_reg[1]);
-	return ((double)buffer * 250 * 3.1415) / 32768 / 180;
+	return ((double)buffer * 250 ) / 32768;
 }
 
 double read_gyro_z(int adress) {
@@ -54,5 +54,5 @@ double read_gyro_z(int adress) {
 	buffer_reg[0] = i2c_read_register(GYRO_ZOUT_H, adress);
 	buffer_reg[1] = i2c_read_register(GYRO_ZOUT_L, adress);
 	int16_t buffer = (buffer_reg[0] << 8) | (buffer_reg[1]);
-	return ((double)buffer * 250 * 3.1415) / 32768 / 180;
+	return ((double)buffer * 250) / 32768;
 }

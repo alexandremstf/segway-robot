@@ -21,7 +21,7 @@ void usart_transmit( unsigned char data ) {
 }
 
 void usart_transmit_double(double value){
-	unsigned char result[ 12];
+	unsigned char result[12];
 	dtostrf(value, 7, 4, result);
 
 	int i = 0;
