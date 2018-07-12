@@ -1,8 +1,8 @@
 #include "i2c.h"
 
 void i2c_init (void){
-	TWBR = 3;
-	TWSR = 1;
+	TWBR = 2;
+	TWSR &= ~(0x03);
 }
 
 int i2c_read_multiple_register(uint8_t* store, int regAdd, unsigned char count, uint16_t adress)
