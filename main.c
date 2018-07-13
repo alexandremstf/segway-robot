@@ -50,13 +50,13 @@ void main() {
 }
 
 double controller(){
-	double erro = (-5 - get_angle()) * (M_PI / 180);
+	double erro = (-3 - get_angle()) * (M_PI / 180);
 
 	double derivada = (erro - erro_anterior) / dt;
 	integral = integral + erro * dt;
 	erro_anterior = erro;
 
-	double output = 255 * erro + 0 * derivada + 0.1 * integral;
+	double output = 200 * erro + 0.8 * derivada + 0 * integral;
 
 	if (output > 255) output = 255;
 	if (output < -255) output = -255;
