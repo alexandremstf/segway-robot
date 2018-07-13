@@ -10,11 +10,13 @@
 #include <avr/interrupt.h>
 #include <stdlib.h>
 
-double dt = 0.01;
+double dt = 0.003;
 double angle_y = 0;
+double erro_anterior = 0;
+double integral = 0;
 
 double get_angle();
-void controller();
+double controller();
 void config_timer_interrupt();
 void configPWM();
 void set_PWM(int16_t, uint8_t);
@@ -34,19 +36,17 @@ void main() {
 	while(1) {}
 }
 
-void controller(){
-	/*
-	if (get_angle() < 0) {
-		set_PWM(120, 1);
-		set_PWM(120, 2);
-	} else {
-		set_PWM(-120, 1);
-		set_PWM(-120, 2);
-	}
-	*/
+double controller(){
+	double erro = (0 - get_angle()) * (M_PI / 180);
+	double derivada = (erro - erro_anterior) / dt;
+	integral = integral + erro * dt;
+	erro_anterior = erro;
 
-	usart_transmit_double( get_angle() );
-	usart_transmit('\n');
+	double output = 200 * erro + 0 * derivada + 0 * integral;
+
+	if (output > 255) output = 255;
+	if (output < -255) output = -255;
+	return output;
 }
 
 double get_angle(){
@@ -107,13 +107,20 @@ void config_timer_interrupt() {
 	TCCR1A = 0; // set entire TCCR1A register to 0
 	TCCR1B = 0; // same for TCCR1B
 	TCNT1  = 0; // initialize counter value to 0
-	OCR1A = 19999; // = 16000000 / (8 * 100) - 1 (must be <65536)
+	// set compare match register for 300.0018750117188 Hz increments
+	OCR1A = 53332; // = 16000000 / (1 * 300.0018750117188) - 1 (must be <65536)
+	// turn on CTC mode
 	TCCR1B |= (1 << WGM12);
-	TCCR1B |= (0 << CS12) | (1 << CS11) | (0 << CS10);
+	// Set CS12, CS11 and CS10 bits for 1 prescaler
+	TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10);
+	// enable timer compare interrupt
 	TIMSK1 |= (1 << OCIE1A);
 	sei(); // allow interrupts
 }
 
 ISR(TIMER1_COMPA_vect){
-	controller();
+	double c = controller();
+
+	set_PWM(c, 1);
+	set_PWM(c, 2);
 }
